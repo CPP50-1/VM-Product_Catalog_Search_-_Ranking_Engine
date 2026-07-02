@@ -9,6 +9,6 @@ def tokenize(text: str):
     # removes multiple spaces
     text = re.sub(' +', ' ', text).strip()
     if text:
-        return re.split(' ', text)
+        return re.split(' ', text.lower())
     else:
         return []
