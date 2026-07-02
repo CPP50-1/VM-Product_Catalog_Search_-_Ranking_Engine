@@ -1,6 +1,6 @@
 import re
 
-def tokenize(text: str):
+def tokenize(text: str) -> list[str]:
     """Returns a list of tokens from the given text, ignoring punctuation and 2- letters words"""
     # removes non-letters
     text = re.sub( r'[^\w\s]', ' ', text)
