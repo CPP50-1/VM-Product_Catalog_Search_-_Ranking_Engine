@@ -1,5 +1,5 @@
 import json
-import time
+from time import perf_counter
 from .tokenize import tokenize
 
 
@@ -10,7 +10,7 @@ class Index:
         if cls._instance is None:
             print("Building index... faster than a salesperson on commission.")
 
-            start = time.perf_counter()
+            start = perf_counter()
 
             cls._instance = {}
             with open("catalog.json", "r") as f:
@@ -21,7 +21,7 @@ class Index:
                     for index in indexs:
                         cls._instance.setdefault(str(index), []).append(product["id"])
 
-            elapsed = time.perf_counter() - start
+            elapsed = perf_counter() - start
             print(f"Index built. {len(data)} products tamed in {elapsed:.3f}s.")
 
         return cls._instance
