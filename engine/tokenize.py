@@ -8,4 +8,7 @@ def tokenize(text: str):
     text = re.sub( r'\W*\b\w{1,2}\b', ' ', text)
     # removes multiple spaces
     text = re.sub(' +', ' ', text).strip()
-    return re.split(' ', text)
+    if text:
+        return re.split(' ', text)
+    else:
+        return []
