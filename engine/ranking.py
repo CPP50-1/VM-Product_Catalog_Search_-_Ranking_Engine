@@ -1,32 +1,37 @@
 import heapq
 import math
+import json
 
 from engine.tokenize import tokenize
 from engine.index import Index
 
-def get_score(max_tokens: int, product: dict) -> float:
-    return ((product['match']/max_tokens)*0.5 +
-            product['product']['stock']*0.2 +
-            (1/ math.log2(product['product']['rank'] + 2))*0.3)
+def get_score(max_tokens: int, product_tokens: int, product: dict) -> float:
+    """Gives score for a product based on number of tokens in search, stock and rank"""
+    return ((product_tokens/max_tokens)*0.5 +
+            product['stock']*0.2 +
+            (1/ math.log2(product['sales_rank'] + 2))*0.3)
 
 
 def search(query: str, top_k:int = 10):
+    """returns a list of tuple (score, product), ordered by score and limited to top_k items"""
     tokens = tokenize(query)
-    results = {}
+    matches = {}
     searched_list= []
     index = Index()
 
     for token in tokens:
-        list_product = index[token]
+        list_product = index.get(token) or []
         for product in list_product:
-            if results.get(product):
-                results[product]['match'] += 1
-            else: results[product] = {'match': 1}
+            if matches.get(product):
+                matches[product] += 1
+            else: matches[product] = 1
 
-    for result in results:
-        # score = get_score(len(tokens), result)
-        heapq.heappush(searched_list, (1, result))
-        if len(searched_list) > top_k:
-            heapq.heappop(searched_list)
-    return searched_list
-print(search('bluetooth',1000))
+    with open("catalog.json", "r") as f:
+        data = json.load(f)
+        for match_qty in matches:
+            product = [element for element in data if element['id'] == match_qty]
+            score = get_score(len(tokens), matches[match_qty], product[0])
+            heapq.heappush(searched_list, (score, product))
+            if len(searched_list) > top_k:
+                heapq.heappop(searched_list)
+    return sorted(searched_list, reverse=True)
