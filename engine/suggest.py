@@ -1,6 +1,7 @@
 
 
 def words_difference(str1, str2):
+    """returns the number of operations needed to transform str1 to str2"""
     m = len(str1)
     n = len(str2)
 
@@ -20,5 +21,4 @@ def words_difference(str1, str2):
                 # Characters don't match, choose minimum cost among insertion, deletion, or substitution
                 matrix[i][j] = 1 + min(matrix[i][j - 1], matrix[i - 1][j], matrix[i - 1][j - 1])
 
-    # Return the edit distance between the strings
     return matrix[m][n]
