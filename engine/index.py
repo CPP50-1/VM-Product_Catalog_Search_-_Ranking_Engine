@@ -49,3 +49,4 @@ class Index:
     def reset(cls) -> None:
         """For test isolation only ! Never use it elsewhere !"""
         cls._index = None
+        cls._catalog = None
