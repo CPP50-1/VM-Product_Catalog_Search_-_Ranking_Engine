@@ -22,9 +22,7 @@ def search(query: str, top_k:int = 10):
     for token in tokens:
         list_product = index.get(token) or []
         for product in list_product:
-            if matches.get(product):
-                matches[product] += 1
-            else: matches[product] = 1
+            matches[product] = matches.get(product, 0) + 1
 
     with open("catalog.json", "r") as f:
         data = json.load(f)
