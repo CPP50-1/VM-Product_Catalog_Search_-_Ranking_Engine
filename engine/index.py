@@ -24,7 +24,7 @@ class Index:
     @classmethod
     def _load(cls):
         if cls._index is None:
-            print("Building index... faster than a salesperson on commission.")
+            print("Building index and catalog... faster than a salesperson on commission.")
 
             start = perf_counter()
 
@@ -43,7 +43,7 @@ class Index:
                         cls._index.setdefault(str(index), []).append(product["id"])
 
             elapsed = perf_counter() - start
-            print(f"Index built. {len(data)} products tamed in {elapsed:.3f}s.")
+            print(f"They're built. {len(data)} products tamed in {elapsed:.3f}s.")
 
     @classmethod
     def reset(cls) -> None:
