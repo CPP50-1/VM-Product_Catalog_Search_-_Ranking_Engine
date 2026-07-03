@@ -1,4 +1,21 @@
+from engine.index import Index
 
+def suggest(query: list[str], max_suggestions: int = 3):
+    """returns the closest (max_suggestions) words in index for each word in query"""
+    index = Index().get_index()
+    result = {}
+    max_diff = 2
+    for word in query:
+        for token in [tk for tk in index.keys() if len(word)-2 <= len(tk) <= len(word) +2]:
+            diff = words_difference(word, token)
+            if diff <= max_diff:
+                result[word] = result.get(word, [])
+                result[word].append((diff, token))
+        if result.get(word):
+            result[word].sort()
+            result[word] = result[word][:max_suggestions]
+
+    return result if result else None
 
 def words_difference(str1, str2):
     """returns the number of operations needed to transform str1 to str2"""
