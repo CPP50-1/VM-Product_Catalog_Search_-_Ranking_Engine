@@ -1,6 +1,5 @@
 import heapq
 import math
-import json
 
 from engine.tokenize import tokenize
 from engine.index import Index
@@ -17,19 +16,19 @@ def search(query: str, top_k:int = 10):
     tokens = tokenize(query)
     matches = {}
     searched_list= []
-    index = Index()
+    index = Index().get_index()
+    catalog = Index().get_catalog()
 
     for token in tokens:
         list_product = index.get(token) or []
         for product in list_product:
             matches[product] = matches.get(product, 0) + 1
 
-    with open("catalog.json", "r") as f:
-        data = json.load(f)
-        for match_qty in matches:
-            product = [element for element in data if element['id'] == match_qty]
-            score = get_score(len(tokens), matches[match_qty], product[0])
-            heapq.heappush(searched_list, (score, product))
-            if len(searched_list) > top_k:
-                heapq.heappop(searched_list)
+
+    for match_id in matches:
+        product = catalog[match_id]
+        score = get_score(len(tokens), matches[match_id], product)
+        heapq.heappush(searched_list, (score, product))
+        if len(searched_list) > top_k:
+            heapq.heappop(searched_list)
     return sorted(searched_list, reverse=True)
