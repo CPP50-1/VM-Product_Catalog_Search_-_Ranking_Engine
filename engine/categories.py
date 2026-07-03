@@ -85,7 +85,6 @@ def search_in_category(tokens: list[str], category: str, top_k: int) -> list[tup
         if cat in cat_products:
             for product_id in cat_products[cat]:
                 if product_id in matching_ids:
-                    before_len = len(matched_cat_products_id)
                     matched_cat_products_id.add(product_id)
                     token_occurence[product_id] = token_occurence.get(product_id, 0) + 1
 
