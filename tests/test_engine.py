@@ -1,4 +1,3 @@
-import pytest
 from engine.categories import search_in_category
 from engine.ranking import get_score, search
 from engine.suggest import suggest, words_difference
@@ -8,22 +7,40 @@ from engine.tokenize import tokenize
 class TestCategories:
 
     def test_categories_1(self):
-        pass
+        # full path test
+        results = search_in_category(['pro'], 'Office/Supplies/Paper', 200)
+        test = True
+        for result in results:
+            if 'Office/Supplies/Paper' not in result[1]['category']:
+                test = False
+                break
+        assert test
 
     def test_categories_2(self):
-        pass
+        # start path test
+        results = search_in_category(['pro'], 'Office', 200)
+        test = True
+        for result in results:
+            if 'Office' not in result[1]['category']:
+                test = False
+                break
+        assert test
 
     def test_categories_3(self):
-        pass
+        # incomplete category path
+        assert search_in_category(["keyboard"], 'Electronics/Pho', 200) == []
 
     def test_categories_4(self):
-        pass
+        # out of range size
+        assert search_in_category(['pro'], 'Office/Supplies/Paper', -1) == []
 
     def test_categories_5(self):
-        pass
+        # empty category
+        assert search_in_category(['pro'], '', 200) == []
 
     def test_categories_6(self):
-        pass
+        # empty tokens
+        assert search_in_category([''], 'Office/Supplies/Paper', 200) == []
 
 
 class TestRanking:
