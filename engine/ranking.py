@@ -1,7 +1,6 @@
 import heapq
 import math
 
-from engine.tokenize import tokenize
 from engine.index import Index
 
 def get_score(max_tokens: int, product_tokens: int, product: dict) -> float:
@@ -11,9 +10,8 @@ def get_score(max_tokens: int, product_tokens: int, product: dict) -> float:
             (1/ math.log2(product['sales_rank'] + 2))*0.3)
 
 
-def search(query: str, top_k:int = 10):
+def search(tokens: list[str], top_k:int = 10):
     """returns a list of tuple (score, product), ordered by score and limited to top_k items"""
-    tokens = tokenize(query)
     matches = {}
     searched_list= []
     index = Index().get_index()
