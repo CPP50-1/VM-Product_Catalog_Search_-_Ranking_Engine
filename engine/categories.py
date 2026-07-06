@@ -9,6 +9,7 @@ from .ranking import get_score
 class CategoriesTree:
     _tree: dict[str, set[str]] | None = None
     _cat_products: dict[str, set[str]] | None = None
+    _cat_list: list[str] | None = None
 
     @classmethod
     def get_cat_products(cls):
@@ -25,6 +26,13 @@ class CategoriesTree:
         return cls._tree
 
     @classmethod
+    def get_list(cls):
+        """return set[str]"""
+        if cls._cat_list:
+            cls._load()
+        return cls._cat_list
+
+    @classmethod
     def _load(cls):
         if cls._tree is None:
             print("Building category tree... even IKEA would be impressed.")
@@ -33,6 +41,7 @@ class CategoriesTree:
 
             cls._cat_products = {}
             cls._tree = {}
+            cat_list = set()
             with open("catalog.json", 'r') as f:
                 data = json.load(f)
                 for product in data:
@@ -46,6 +55,10 @@ class CategoriesTree:
                         for i in range(len(categories_list) - 1): 
                             cls._tree.setdefault(categories_list[i], set()).add(categories_list[i + 1])
                         cls._tree.setdefault(categories_list[-1], set())
+
+                    for category in categories_list:
+                        cat_list.add(category)
+                cls._cat_list = sorted(cat_list)
 
             elapsed = perf_counter() - start
             print(f"Category tree complete in {elapsed:.3f}s. Your products are now less lost than your keys.")
