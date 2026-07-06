@@ -1,5 +1,5 @@
 from engine.categories import search_in_category
-from engine.ranking import get_score, search
+from engine.ranking import search
 from engine.suggest import suggest, words_difference
 from engine.tokenize import tokenize
 
@@ -105,6 +105,22 @@ class TestSuggest:
     def test_suggest_6(self):
         # long word
         assert suggest(['echargeale']) == {'echargeale': [(2, 'rechargeable')]}
+
+    def test_words_difference_1(self):
+        # 4 to empty (remove)
+        assert words_difference('test', '') == 4
+
+    def test_words_difference_2(self):
+        # empty to 4 (add)
+        assert words_difference('', 'test') == 4
+
+    def test_words_difference_3(self):
+        # 10 differences (replace)
+        assert words_difference('abcdefghij', 'klmnopqrst') == 10
+
+    def test_words_difference_4(self):
+        # all 3 (a, c, x)
+        assert words_difference('abcdefghij', 'aabdefxhij') == 3
 
 
 class TestTokenize:
