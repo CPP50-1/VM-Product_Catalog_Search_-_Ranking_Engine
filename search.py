@@ -7,7 +7,6 @@ def format_product(product: dict) -> str:
     return (
         f"  [{product['id']}] {product['name']:<} {'.' * (len_separator - 2)} {product['category']:>} | "
         f"$ {product['price']:>7.2f} | {product['stock']:<4} left | "
-        # f"ranked {product['sales_rank']:>5} |"
     )
 
 
