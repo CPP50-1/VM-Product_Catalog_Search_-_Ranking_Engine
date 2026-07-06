@@ -69,8 +69,19 @@ def search_in_category(tokens: list[str], category: str, top_k: int) -> list[tup
             matching_ids.update(index.get(token, []))
 
     # Getting all the matching categories from params: category using BFS from tree mapping of categories
-    last_segment = category.split("/")[-1]
-    queue = deque([(last_segment, category)])
+    parent = {}
+    for p, children in tree.items():
+        for c in children:
+            parent[c] = p
+
+    node = category
+    segments = [node]
+    while node in parent:
+        node = parent[node]
+        segments.append(node)
+
+    full_path = "/".join(reversed(segments))
+    queue = deque([(category, full_path)])
     matched_cat = []
     while queue:
         node, full_path = queue.popleft()
