@@ -50,22 +50,28 @@ class TestRanking:
 class TestSuggest:
 
     def test_suggest_1(self):
-        pass
+        # multiple results
+        assert suggest(['mart']) == {'mart': [(1, 'smart'), (2, 'max')]}
 
     def test_suggest_2(self):
-        pass
+        # multiple words with multiple results
+        assert suggest(['rihe', 'mart']) == {'rihe': [(2, 'drive'), (2, 'lite')], 'mart': [(1, 'smart'), (2, 'max')]}
 
     def test_suggest_3(self):
-        pass
+        # empty
+        assert suggest([]) is None
 
     def test_suggest_4(self):
-        pass
+        # limiting suggestions
+        assert suggest(['bbb'], 1) == {'bbb': [(2, 'hub')]}
 
     def test_suggest_5(self):
-        pass
+        # out of range max_suggestions
+        assert suggest(['bbb'], -1) is None
 
     def test_suggest_6(self):
-        pass
+        # long word
+        assert suggest(['echargeale']) == {'echargeale': [(2, 'rechargeable')]}
 
 
 class TestTokenize:
