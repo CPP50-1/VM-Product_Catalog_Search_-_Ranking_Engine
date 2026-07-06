@@ -70,23 +70,33 @@ class TestSuggest:
 
 class TestTokenize:
     def test_tokenize_1(self):
+        # empty string
         assert tokenize("") == []
 
     def test_tokenize_2(self):
+        # no valid tokens
         assert tokenize("ui.... th tj.ki...    io!ui") == []
 
     def test_tokenize_3(self):
+        # words separated by symbol
         assert tokenize("this;is;a;test;") == ["this", "test"]
 
     def test_tokenize_4(self):
+        # lots of spaces
         assert tokenize("          coucou            ui") == ["coucou"]
 
     def test_tokenize_5(self):
+        # multiline text + multiples of the same token
         assert tokenize("""
                         - The data structure(s) you chose and why (what alternatives did you consider?)
                         - The build-time complexity (index construction, tree construction)
                         """
-                        ) == ["the", "data", "structure", "you", "chose", "and", "why", "what", "alternatives", "did", "consider", "build", "time", "complexity", "index", "construction", "tree"]
+                        ) == ["the", "data", "structure", "you", "chose", "and", "why", "what", "alternatives",
+                              "did", "you", "consider", "the", "build", "time", "complexity", "index", "construction",
+                              "tree"]
+
     def test_tokenize_6(self):
-        assert tokenize('["from", "engine", "suggest", "import", "suggest"]') == ["from", "engine", "suggest", "import", "suggest"]
+        # other type in str form
+        assert (tokenize('["from", "engine", "suggest", "import", "suggest"]') ==
+                ["from", "engine", "suggest", "import", "suggest"])
 
