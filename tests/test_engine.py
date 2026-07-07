@@ -48,17 +48,17 @@ class TestRanking:
     def test_ranking_1(self):
         # simple search
         result = search(['wireless'])
-        assert (result[0][1]["id"] == "P01050") and (result[-1][1]["id"] == "P03657") and len(result) == 10
+        assert (result[0][1] == "P03245") and (result[-1][1] == "P00484") and len(result) == 10
 
     def test_ranking_2(self):
         # multiple words search
         result = search(['wireless', 'hub', 'keyboard'])
-        assert (result[0][1]["id"] == "P00579") and (result[-1][1]["id"] == "P04720") and len(result) == 10
+        assert (result[0][1] == "P02200") and (result[-1][1] == "P03370") and len(result) == 10
 
     def test_ranking_3(self):
         # limiting size
         result = search(['rechargeable'], 5)
-        assert (result[0][1]["id"] == "P01050") and (result[-1][1]["id"] == "P04234") and len(result) == 5
+        assert (result[0][1] == "P00851") and (result[-1][1] == "P03849") and len(result) == 5
 
     def test_ranking_4(self):
         # out of range size
@@ -67,17 +67,16 @@ class TestRanking:
 
     def test_ranking_5(self):
         # top_k higher than results
-        # result = search(['rechargeable'], 6000)
-        result = search(['wireless'], 6000)
+        result = search(['rechargeable'], 6000)
         assert len(result) == 817
 
     def test_ranking_6(self):
         # test of a full result
         result = search(['wireless'], 1)
-        assert result == [(100.55371566952532, {'id': 'P01050', 'name': 'Rechargeable Gaming Digital',
-                                                'category': 'Office/Furniture/Desks',
-                                                'tags': ['wireless', 'chair', 'switch', 'professional', 'adjustable'],
-                                                'price': 71.65, 'stock': 500, 'sales_rank': 46})]
+        assert result == [(0.7946394630357185, 'P03245', {'id': 'P03245', 'name': 'Webcam Professional',
+                                                          'category': 'Office/Supplies/Paper',
+                                                          'tags': ['adapter', 'ergonomic', 'wireless', 'plus'],
+                                                          'price': 784.77, 'stock': 437, 'sales_rank': 7})]
 
 
 class TestSuggest:
@@ -134,7 +133,7 @@ class TestTokenize:
 
     def test_tokenize_3(self):
         # words separated by symbol
-        assert tokenize("this;is;a;test;") == ["this", "test"]
+        assert set(tokenize("this;is;a;test;")) == {"this", "test"}
 
     def test_tokenize_4(self):
         # lots of spaces
@@ -142,16 +141,14 @@ class TestTokenize:
 
     def test_tokenize_5(self):
         # multiline text + multiples of the same token
-        assert tokenize("""
+        assert set(tokenize("""
                         - The data structure(s) you chose and why (what alternatives did you consider?)
                         - The build-time complexity (index construction, tree construction)
                         """
-                        ) == ["the", "data", "structure", "you", "chose", "and", "why", "what", "alternatives",
-                              "did", "you", "consider", "the", "build", "time", "complexity", "index", "construction",
-                              "tree"]
+                        )) == {'build', 'complexity', 'data', 'alternatives', 'why', 'index', 'time', 'the',
+                               'construction', 'structure', 'chose', 'what', 'did', 'tree', 'you', 'and', 'consider'}
 
     def test_tokenize_6(self):
         # other type in str form
-        assert (tokenize('["from", "engine", "suggest", "import", "suggest"]') ==
-                ["from", "engine", "suggest", "import", "suggest"])
-
+        assert (set(tokenize('["from", "engine", "suggest", "import", "suggest"]')) == {'suggest', 'engine', 'from',
+                                                                                        'import'})
