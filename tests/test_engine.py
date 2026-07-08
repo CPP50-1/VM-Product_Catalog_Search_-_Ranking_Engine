@@ -7,8 +7,8 @@ from engine.tokenize import tokenize
 class TestCategories:
 
     def test_categories_1(self):
-        # full path test
-        results = search_in_category(['pro'], 'Office/Supplies/Paper', 200)
+        # mid path test
+        results = search_in_category(['pro'], 'Supplies', 200)
         test = True
         for result in results:
             if 'Office/Supplies/Paper' not in result[1]['category']:
@@ -27,12 +27,12 @@ class TestCategories:
         assert test
 
     def test_categories_3(self):
-        # incomplete category path
-        assert search_in_category(["keyboard"], 'Electronics/Pho', 200) == []
+        # old category path
+        assert search_in_category(["keyboard"], 'Electronics/Phone', 200) == []
 
     def test_categories_4(self):
         # out of range size
-        assert search_in_category(['pro'], 'Office/Supplies/Paper', -1) == []
+        assert search_in_category(['pro'], 'Paper', -1) == []
 
     def test_categories_5(self):
         # empty category
@@ -40,7 +40,7 @@ class TestCategories:
 
     def test_categories_6(self):
         # empty tokens
-        assert search_in_category([''], 'Office/Supplies/Paper', 200) == []
+        assert search_in_category([''], 'Paper', 200) == []
 
 
 class TestRanking:
