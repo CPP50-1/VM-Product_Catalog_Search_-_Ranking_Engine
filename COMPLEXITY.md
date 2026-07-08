@@ -115,6 +115,8 @@ Given n = 5 000 products, C ≈ 30 category nodes, max depth = 3:
   - Heap keep top-5: m push/pop operations.
   - Total work: k+m operations vs. scanning all 5 000 products × 3 categories = 15 000 operations.
 
+---
+
 ## Part 4 - Autocomplete / Suggestions
 
 ### Data structure choice
