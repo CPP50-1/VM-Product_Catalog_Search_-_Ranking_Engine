@@ -11,7 +11,7 @@ class TestCategories:
         results = search_in_category(['pro'], 'Supplies', 200)
         test = True
         for result in results:
-            if 'Office/Supplies/Paper' not in result[1]['category']:
+            if 'Supplies' not in result[2]['category']:
                 test = False
                 break
         assert test
@@ -21,7 +21,7 @@ class TestCategories:
         results = search_in_category(['pro'], 'Office', 200)
         test = True
         for result in results:
-            if 'Office' not in result[1]['category']:
+            if 'Office' not in result[2]['category']:
                 test = False
                 break
         assert test

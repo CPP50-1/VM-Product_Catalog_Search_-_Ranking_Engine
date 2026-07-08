@@ -2,6 +2,8 @@ from engine.index import Index
 
 def suggest(query: list[str], max_suggestions: int = 3):
     """returns the closest (max_suggestions) words in index for each word in query"""
+    if max_suggestions <= 0:
+        return None
     index = Index().get_index()
     result = {}
     max_diff = 2
