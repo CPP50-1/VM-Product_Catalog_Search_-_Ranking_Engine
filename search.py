@@ -55,7 +55,7 @@ def main() -> None:
         label += f" in '{args.category}'"
     print(label)
     print()
-    for _, product in results:
+    for _, _, product in results:
         print(format_product(product))
     print()
 
