@@ -117,7 +117,7 @@ def search_in_category(tokens: list[str], category: str, top_k: int) -> list[tup
     for product_id in matched_cat_products_id:
         product = catalog[product_id]
         score = get_score(len(tokens), token_occurence[product_id], product)
-        heapq.heappush(product_ranked, (score, product))
+        heapq.heappush(product_ranked, (score, product['id'], product))
         if len(product_ranked) > top_k:
             heapq.heappop(product_ranked)
             
